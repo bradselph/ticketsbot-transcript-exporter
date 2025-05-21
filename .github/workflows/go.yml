@@ -16,11 +16,13 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.24'
+          go-version: '1.21'
 
-      - name: Get binary name from repo
-        id: vars
-        run: echo "BINARY_NAME=${env:GITHUB_REPOSITORY}.exe" >> $env:GITHUB_ENV
+      - name: Set binary and artifact name
+        shell: pwsh
+        run: |
+          $repo = "${{ github.repository }}".Replace('/', '-')
+          echo "BINARY_NAME=$repo.exe" >> $env:GITHUB_ENV
 
       - name: Build
         run: go build -v -o $env:BINARY_NAME .
